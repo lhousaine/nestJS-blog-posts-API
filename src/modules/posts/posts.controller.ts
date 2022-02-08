@@ -38,13 +38,13 @@ export class PostsController {
   }
 
   @Get('list/filter')
-  queryPosts(
-    @Query('tags') tags: string,
+  queryPostsByTag(
+    @Query('tag') tag: string,
     @Query('sortBy') sortBy: string,
     @Query('direction') direction: string,
   ) {
-    return this.postsService.queryPosts({
-      tags,
+    return this.postsService.queryPostsByTag({
+      tag,
       sortBy,
       direction,
     });

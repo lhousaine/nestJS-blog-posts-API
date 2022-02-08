@@ -1,5 +1,5 @@
 export class PostQueryDto {
-  tags: string;
+  tag: string;
 
   sortBy: string;
 

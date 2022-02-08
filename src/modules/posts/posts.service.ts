@@ -3,7 +3,6 @@ import { PostCreateDto } from './dto/post.create.dto';
 import { HttpService } from '@nestjs/axios';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { lastValueFrom, map } from 'rxjs';
 import { Repository } from 'typeorm';
 import { ICustomFilterService } from '../../common/filters/icumstomFilter.service';
 import { ISortingService } from '../../common/sorting/isorting.service';
@@ -20,10 +19,10 @@ export class PostsService {
     private postsRepository: Repository<PostEntity>,
   ) {}
 
-  async queryPosts(postQuery: PostQueryDto): Promise<any> {
-    const { tags, sortBy, direction } = postQuery;
-    if (!tags) {
-      throw new BadRequestException('Tags parameter is required');
+  queryPostsByTag(postQueryDto: PostQueryDto) {
+    const { tag, sortBy, direction } = postQueryDto;
+    if (!tag) {
+      throw new BadRequestException('Tag parameter is required');
     }
     if (
       sortBy === '' ||
@@ -37,27 +36,11 @@ export class PostsService {
     ) {
       throw new BadRequestException('direction parameter is invalid');
     }
-
-    const observablesData = [];
-    tags.split(',').forEach((tag) => {
-      observablesData.push(
-        this.httpService
-          .get(`https://api.hatchways.io/assessment/blog/posts?tag=${tag}`)
-          .pipe(map((response) => response.data.posts)),
-      );
-    });
-
-    const data: any = await Promise.all(
-      observablesData.map((observableData) => lastValueFrom(observableData)),
-    );
-
-    const filteredData = this.customFilterService.removeDuplicateFromArray(
-      data.flat(),
-      'id',
-    );
-    return {
-      posts: this.sortingService.sortArray(filteredData, sortBy, direction),
-    };
+    return this.postsRepository
+      .createQueryBuilder('posts')
+      .where(":tag = ANY ( string_to_array(posts.tags, ','))", { tag: tag })
+      .orderBy(sortBy)
+      .getMany();
   }
 
   create(postDto: PostCreateDto) {
