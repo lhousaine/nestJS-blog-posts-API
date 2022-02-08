@@ -1,10 +1,11 @@
 {
-  "type": "mysql",
+  "type": "postgres",
   "host": "localhost",
-  "port": 3306,
+  "port": 5432,
   "username": "root",
   "password": "root1234",
   "database": "test",
   "entities": ["dist/**/*.entity{.ts,.js}"],
-  "synchronize": true
+  "synchronize": true,
+  "logger": "advanced-console"
 }
