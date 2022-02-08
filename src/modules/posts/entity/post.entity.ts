@@ -7,6 +7,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { ColumnNumericTransformer } from '../../../common/helpers/number-transformer';
 
 @Entity()
 export class PostEntity {
@@ -17,7 +18,11 @@ export class PostEntity {
   authorId: number;
   @Column()
   likes: number;
-  @Column()
+  @Column('numeric', {
+    precision: 7,
+    scale: 2,
+    transformer: new ColumnNumericTransformer(),
+  })
   popularity: number;
   @Column()
   reads: number;
