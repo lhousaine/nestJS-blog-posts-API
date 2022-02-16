@@ -5,6 +5,7 @@ import { PingModule } from './modules/ping/ping.module';
 import { CommonModule } from './common/common.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getConnectionOptions } from 'typeorm';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { getConnectionOptions } from 'typeorm';
     PostsModule,
     PingModule,
     UsersModule,
+    AuthModule,
     CommonModule,
     CacheModule.register({
       ttl: 0,

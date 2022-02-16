@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { UpdateUserDto } from './update.user.dto';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './user.dto';
@@ -12,11 +13,19 @@ export class UsersService {
   ) {}
 
   create(createUserDto: CreateUserDto): Promise<User> {
-    const user = new User();
-    user.firstName = createUserDto.firstName;
-    user.lastName = createUserDto.lastName;
-
+    const user = this.usersRepository.create(createUserDto);
     return this.usersRepository.save(user);
+  }
+
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const existUser = await this.usersRepository.findOne(id);
+    if (!existUser) {
+      throw new BadRequestException(`There is no user identify by ${id}`);
+    }
+
+    Object.assign(existUser, updateUserDto);
+    console.log(existUser);
+    return this.usersRepository.save(existUser);
   }
 
   async findAll(): Promise<User[]> {
@@ -28,6 +37,10 @@ export class UsersService {
 
   findOne(id: string): Promise<User> {
     return this.usersRepository.findOne(id);
+  }
+
+  async findByUsername(username: string) {
+    return this.usersRepository.findOne({ where: { username } });
   }
 
   async remove(id: string): Promise<void> {

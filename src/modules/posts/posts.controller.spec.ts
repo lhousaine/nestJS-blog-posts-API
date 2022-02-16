@@ -79,23 +79,23 @@ describe('PostsController', () => {
     jest
       .spyOn(postsService, 'queryPosts')
       .mockImplementation(async () => postsData.slice(0, 2));
-    const posts = await controller.queryPosts('culture,history', null, null);
+    const posts = await controller.queryPostsByTag('culture,history', null, null);
 
-    expect(postsService.queryPosts).toBeCalledTimes(1);
+    expect(postsService.queryPostsByTag).toBeCalledTimes(1);
 
     expect(posts).toHaveLength(2);
   });
 
   it('shoud get all posts ordered by reads in asc direction', async () => {
     jest
-      .spyOn(postsService, 'queryPosts')
+      .spyOn(postsService, 'queryPostsByTag')
       .mockImplementation(async () => postsData);
-    const posts = await controller.queryPosts(
+    const posts = await controller.queryPostsByTag(
       'culture,history,health',
       'reads',
       null,
     );
-    expect(postsService.queryPosts).toBeCalledTimes(1);
+    expect(postsService.queryPostsByTag).toBeCalledTimes(1);
 
     expect(posts).toHaveLength(3);
     expect(posts[0].id).toEqual(1);
@@ -105,15 +105,15 @@ describe('PostsController', () => {
 
   it('shoud get all posts ordered by reads in desc direction', async () => {
     jest
-      .spyOn(postsService, 'queryPosts')
+      .spyOn(postsService, 'queryPostsByTag')
       .mockImplementation(async () => postsData.reverse());
-    const posts = await controller.queryPosts(
+    const posts = await controller.queryPostsByTag(
       'culture,history, health',
       'reads',
       'desc',
     );
 
-    expect(postsService.queryPosts).toBeCalledTimes(1);
+    expect(postsService.queryPostsByTag).toBeCalledTimes(1);
 
     expect(posts).toHaveLength(3);
     expect(posts[0].id).toEqual(3);

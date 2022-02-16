@@ -1,6 +1,5 @@
 import { User } from './../user/user.entity';
 import { PostCreateDto } from './dto/post.create.dto';
-import { HttpService } from '@nestjs/axios';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -12,7 +11,6 @@ import { PostEntity } from './entity/post.entity';
 @Injectable()
 export class PostsService {
   constructor(
-    private httpService: HttpService,
     private sortingService: ISortingService,
     private customFilterService: ICustomFilterService,
     @InjectRepository(PostEntity)
