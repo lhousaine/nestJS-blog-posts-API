@@ -4,7 +4,8 @@ import { UsersService } from '../user/users.service';
 
 @Injectable()
 export class AuthService {
-  constructor( private usersService: UsersService,
+  constructor(
+    private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
 
@@ -18,7 +19,11 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+    const payload = {
+      username: user.username,
+      sub: user.userId,
+      roles: user.roles,
+    };
     return {
       access_token: this.jwtService.sign(payload),
     };

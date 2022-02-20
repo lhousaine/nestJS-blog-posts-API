@@ -1,6 +1,7 @@
 import { PostEntity } from './../posts/entity/post.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Exclude, Expose } from 'class-transformer';
+import { Role } from 'src/common/helpers/role.enum';
 
 @Entity()
 export class User {
@@ -11,7 +12,7 @@ export class User {
   firstName: string;
 
   @Column()
-  lastName: string
+  lastName: string;
 
   @Column({ nullable: false })
   username: string;
@@ -25,4 +26,7 @@ export class User {
 
   @OneToMany((type) => PostEntity, (post) => post.author)
   posts: PostEntity[];
+
+  @Column('text', { nullable: true, array: true })
+  roles: Role[];
 }

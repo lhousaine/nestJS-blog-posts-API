@@ -6,6 +6,7 @@ import { CommonModule } from './common/common.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getConnectionOptions } from 'typeorm';
 import { AuthModule } from './modules/auth/auth.module';
+import { JWTModule } from './common/modules/jwt.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AuthModule } from './modules/auth/auth.module';
           autoLoadEntities: true,
         }),
     }),
+    JWTModule,
     PostsModule,
     PingModule,
     UsersModule,
@@ -26,5 +28,6 @@ import { AuthModule } from './modules/auth/auth.module';
     }),
   ],
   exports: [CacheModule],
+  providers: [],
 })
 export class AppModule {}

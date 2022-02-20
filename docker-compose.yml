@@ -1,11 +1,13 @@
-version: "3"
+version: '3.7'
 
 services:
-  mysql:
-    image: mysql:8
+  database:
+    image: 'postgres:latest'
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root1234
-      MYSQL_DATABASE: test
     ports:
-      - "3306:3306"
+      - 5432:5432
+
+    environment:
+      POSTGRES_USER: root # The PostgreSQL user (useful to connect to the database)
+      POSTGRES_PASSWORD: root1234 # The PostgreSQL password (useful to connect to the database)
+      POSTGRES_DB: test # The PostgreSQL default database (automatically created at first launch)

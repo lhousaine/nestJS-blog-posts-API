@@ -5,6 +5,7 @@ import { HttpModule } from '@nestjs/axios';
 import { CommonModule } from '../../common/common.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostEntity } from './entity/post.entity';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { PostEntity } from './entity/post.entity';
       }),
     }),
     CommonModule,
+    PassportModule,
   ],
   controllers: [PostsController],
   providers: [PostsService],
